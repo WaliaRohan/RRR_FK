@@ -20,7 +20,7 @@
 #include <math.h> //for calculating transformation matrix
 #include <vector> //for storing transformation matrix
 #include <string> //for printing vector
-#include <Eigen/Dense>
+#include <Eigen/Dense> // for performing vector operations
 
 using namespace Eigen;
 
@@ -97,9 +97,9 @@ void pos_fk_callback(const geometry_msgs::Vector3::ConstPtr& msg)
 }
 
 /**
- * @brief This
+ * @brief Function for claculating inverse position kinematics for the robot.
  * 
- * @param msg 
+ * @param msg message containing position (<x, y, z>) of the end-effector
  */
 void pos_ik_callback(const geometry_msgs::Pose::ConstPtr& msg)
 {
@@ -107,34 +107,34 @@ void pos_ik_callback(const geometry_msgs::Pose::ConstPtr& msg)
 	geometry_msgs::Quaternion q = msg->orientation;
 	
 	ROS_INFO(" \n Received point values -> x: [%.3f] y: [%.3f] z: [%.3f]",
-   p.x, p.y, p.z);
+    p.x, p.y, p.z);
    
-   ROS_INFO(" \n Received oreintation values -> x: [%.3f] y: [%.3f] z: [%.3f] w[%.3f]",
+    ROS_INFO(" \n Received oreintation values -> x: [%.3f] y: [%.3f] z: [%.3f] w[%.3f]",
     q.x, q.y, q.z, q.w);
-   
-   float Xc = p.x, Yc = p.y, Zc = p.z;
-   
-   float d1 = 1, d2 = 1, d3 = 1; //joint variables and link lengths
-   
-   float t1 = atan2(Yc, Xc);
-   
-   float r = sqrt(pow(Xc, 2) + pow(Yc, 2));
 	
-   float t3 = acos(pow(d2, 2) +  pow(d3, 2) - pow(r, 2) - pow((Zc - d1), 2));
+	float Xc = p.x, Yc = p.y, Zc = p.z;
    
-   float t2 = atan2(Zc - d1, r) - atan2(d3*sin(t3), d2 + d3*cos(t3));
+   	float d1 = 1, d2 = 1, d3 = 1; //joint variables and link lengths
    
-   std::string str = "\nJoint variables-> q1: " + std::to_string(t1) +
-   " q2: " + std::to_string(t2) + " q3: " + std::to_string(t3) + "\n";
+   	float t1 = atan2(Yc, Xc);
    
-   ROS_INFO_STREAM(str);
+   	float r = sqrt(pow(Xc, 2) + pow(Yc, 2));
+	
+   	float t3 = acos(pow(d2, 2) +  pow(d3, 2) - pow(r, 2) - pow((Zc - d1), 2));
    
+   	float t2 = atan2(Zc - d1, r) - atan2(d3*sin(t3), d2 + d3*cos(t3));
+   
+   	std::string str = "\nJoint variables-> q1: " + std::to_string(t1) +
+   	" q2: " + std::to_string(t2) + " q3: " + std::to_string(t3) + "\n";
+   
+   	ROS_INFO_STREAM(str);
 }
 
 /**
- * @brief 
+ * @brief function for calculating the joint velocities based on
+ * 		  end-effector velocity
  * 
- * @param msg 
+ * @param msg message containing end-effector velocity (<v_x, v_y, v_z>)
  */
 void vel_ik_callback(const geometry_msgs::Twist::ConstPtr& msg)
 {
@@ -229,9 +229,7 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
 
   ros::Subscriber forward_kinematics = n.subscribe("transform_fk", 1000, pos_fk_callback);
-  
-  ros::Subscriber inverse_kinematics = n.subscribe("transform_ik", 1000, pos_ik_callback);
-  
+  ros::Subscriber inverse_kinematics = n.subscribe("transform_ik", 1000, pos_ik_callback);S
   ros::Subscriber velocity_kinematics = n.subscribe("transform_vel", 1000, vel_ik_callback);
 
   ros::spin();
