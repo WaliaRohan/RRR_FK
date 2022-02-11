@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @WaliaRohan
-- 👀 I’m interested in Robotics, 8-bit video game development and cars!
-- 🌱 I’m currently learning AI and motion planning.
+- 👀 I’m interested in software development for Robotics!
+- 🌱 I’m currently learning researching shape formation using robotic swarms.
 - 💞️ I’m looking to collaborate on open source projects built using C++, ROS and python. 
 - 📫 Reach me at walia.rohan@gmail.com
 
